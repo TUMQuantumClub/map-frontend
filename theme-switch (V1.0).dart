@@ -1,7 +1,7 @@
 // theme-switch (1.0) as .dart file
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preference.dart'
+import 'package:shared_preferences/shared_preferences.dart'
 
 void main() {
     runApp(MyApp());
@@ -10,7 +10,7 @@ void main() {
 // MyApp = stateful widget, that maintains current theme state
 class MyApp extends StatefulWidget {
     @override
-    _MyAppState createState() => _MyAppState
+    _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
     }
     // _saveTheme Method: asynchronously saves theme preference to when changed
     _saveTheme(bool value) async {
-        _SharedPreferences pref = await SharedPreferences.getInstance();
+        _SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isDarkMode', value);
     }
     
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
             theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
             home: Scaffold(
                 appBar: AppBar()
-                    title: Text('Theme Switch')
+                    title: Text('Theme Switch'),
             ),
             body: Center(
                 child: SwitchListTile( // Allows user to toggle theme, which updates the state and saves the preference
