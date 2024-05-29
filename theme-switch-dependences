@@ -1,0 +1,7 @@
+# Add Dependencies
+# shared_preferences package must be included in pubspec.yaml (file for saving user's preference)
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preference: ^2.0.13
