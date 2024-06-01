@@ -1,5 +1,3 @@
-// theme-switch (1.0) as .dart file
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart'
 
@@ -7,7 +5,6 @@ void main() {
     runApp(MyApp());
 }
 
-// MyApp = stateful widget, that maintains current theme state
 class MyApp extends StatefulWidget {
     @override
     _MyAppState createState() => _MyAppState();
