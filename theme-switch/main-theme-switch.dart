@@ -6,15 +6,15 @@ SharedPreferences? prefs;
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     prefs = await SharedPreferences.getInstance();
-    runApp(MyApp());
+    runApp(MainApp());
 }
 
-class MyApp extends StatefulWidget {
+class MainApp extends StatefulWidget {
     @override
-    _MyAppState createState() => _MyAppState();
+    _MainAppState createState() => _MainAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MainAppState extends State<MainApp> {
     bool _isDarkMode = false;
 
     @override
