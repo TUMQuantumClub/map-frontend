@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+SharedPreferences? prefs;
+
+void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    prefs = await SharedPreferences.getInstance();
     runApp(MyApp());
 }
 
@@ -14,44 +18,63 @@ class _MyAppState extends State<MyApp> {
     bool _isDarkMode = false;
 
     @override
-    void initState() { // initState Method: loads the theme preference from shared preference, when App starts
+
+    void initState() {
         super.initState();
         _loadTheme();
-    }
-    // _loadTheme Method: asynchronously loads preference from SharedPreferences, when App starts
-    _loadTheme() async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
+  }
+
+    // Load theme preference from SharedPreferences
+    void _loadTheme() {
         setState(() {
-            _isDarkMode = (prefs.getBool('isDarkMode') ?? false);
-        })
-    }
-    // _saveTheme Method: asynchronously saves theme preference to when changed
-    _saveTheme(bool value) async {
-        _SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isDarkMode', value);
-    }
-    
+            _isDarkMode = (prefs?.getBool('isDarkMode') ?? false);
+    });
+  }
+
+    // Save theme preference to SharedPreferences
+    void _saveTheme(bool value) {
+        prefs?.setBool('isDarkMode', value);
+  }
+
     @override
+
     Widget build(BuildContext context) {
-        return MaterialApp( // uses conditional to set theme to either dark or light, based on _isDarkMode booloan
+        return MaterialApp(
             theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
             home: Scaffold(
-                appBar: AppBar()
-                    title: Text('Theme Switch'),
-            ),
-            body: Center(
-                child: SwitchListTile( // Allows user to toggle theme, which updates the state and saves the preference
-                    title: Text('Dark Mode'),
-                    value: _isDarkMode,
-                    onChanged: (value) {
-                        setState(() {
-                            _isDarkMode = value;
-                            _saveTheme(value);
-                        }
-                        )
-                    }
-                )
-            )
-        )
+                appBar: AppBar(
+                    title: Text('Flutter Theme Switch'),
+                ),
+                drawer: Drawer(
+                    child: ListView(
+                        padding: EdgeInsets.zero,
+                        children: <Widget>[
+                            DrawerHeader(
+                                child: Text('Settings'),
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                ),
+                            ),
+                            SwitchListTile(
+                                title: Text('Dark Mode'),
+                                value: _isDarkMode,
+                                onChanged: (value) {
+                                    setState(() {
+                                        _isDarkMode = value;
+                                         _saveTheme(value);
+                                    });
+                                 },
+                            ),
+                         ],
+                    ),
+                 ),
+                body: Center(
+                    child: Text(
+                        'Toggle theme using the sidebar menu.',
+                        style: TextStyle(fontSize: 18),
+                     ),
+                 ),
+             ),
+         );
     }
 }
