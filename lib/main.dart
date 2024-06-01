@@ -1,20 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MainApp());
+SharedPreferences? prefs;
+
+void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    prefs = await SharedPreferences.getInstance();
+    runApp(MainApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MainApp extends StatefulWidget {
+    @override
+    _MainAppState createState() => _MainAppState();
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+class _MainAppState extends State<MainApp> {
+    bool _isDarkMode = false;
+
+    @override
+
+    void initState() {
+        super.initState();
+        _loadTheme();
   }
+
+    // Load theme preference from SharedPreferences
+    void _loadTheme() {
+        setState(() {
+            _isDarkMode = (prefs?.getBool('isDarkMode') ?? false);
+    });
+  }
+
+    // Save theme preference to SharedPreferences
+    void _saveTheme(bool value) {
+        prefs?.setBool('isDarkMode', value);
+  }
+
+    @override
+
+    Widget build(BuildContext context) {
+        return MaterialApp(
+            theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
+            home: Scaffold(
+                appBar: AppBar(
+                    title: Text('Flutter Theme Switch'),
+                ),
+                drawer: Drawer(
+                    child: ListView(
+                        padding: EdgeInsets.zero,
+                        children: <Widget>[
+                            DrawerHeader(
+                                child: Text('Settings'),
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                ),
+                            ),
+                            SwitchListTile(
+                                title: Text('Dark Mode'),
+                                value: _isDarkMode,
+                                onChanged: (value) {
+                                    setState(() {
+                                        _isDarkMode = value;
+                                         _saveTheme(value);
+                                    });
+                                 },
+                            ),
+                         ],
+                    ),
+                 ),
+                body: Center(
+                    child: Text(
+                        'Toggle theme using the sidebar menu.',
+                        style: TextStyle(fontSize: 18),
+                     ),
+                 ),
+             ),
+         );
+    }
 }
