@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-SharedPreferences? prefs;
+SharedPreferences? preferences;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  prefs = await SharedPreferences.getInstance();
+  preferences = await SharedPreferences.getInstance();
   runApp(MainApp());
 }
 
@@ -26,13 +26,13 @@ class _MainAppState extends State<MainApp> {
   // Load theme preference from SharedPreferences
   void _loadTheme() {
     setState(() {
-      _isDarkMode = (prefs?.getBool('isDarkMode') ?? false);
+      _isDarkMode = (preferences?.getBool('isDarkMode') ?? false);
     });
   }
 
   // Save theme preference to SharedPreferences
   void _saveTheme(bool value) {
-    prefs?.setBool('isDarkMode', value);
+    preferences?.setBool('isDarkMode', value);
   }
 
   @override
